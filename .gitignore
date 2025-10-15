@@ -1,0 +1,62 @@
+# --- Python / Django ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+dist/
+build/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+.pyre/
+
+# virtualenv
+.venv/
+venv/
+env/
+
+# env / secrets
+.env
+.env.*.local
+*.env
+
+# Django runtime / artifacts
+*.log
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/       
+static_root/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.iml
+
+# OS junk
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Docker (jeśli używasz)
+*.pid
+*.pid.lock
+
+# Coverage / profiling
+.prof
+*.prof
+
+# Node 
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Misc
+.swp
+.swo

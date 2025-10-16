@@ -2,10 +2,12 @@ Django>=5.0,<6.0
 djangorestframework>=3.15
 django-filter>=24.2
 psycopg2-binary>=2.9
+python-dotenv>=1.0
 requests>=2.32
 beautifulsoup4>=4.12
-lxml>=5.2
-trafilatura>=1.6
+lxml>=5.3
 readability-lxml>=0.8
+trafilatura>=1.9
 dateparser>=1.2
-python-dotenv>=1.0
+
+

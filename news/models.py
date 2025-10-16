@@ -11,6 +11,7 @@ class Article(models.Model):
     published_at = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    extraction_note = models.CharField(max_length=200, blank=True, default="")
 
     def save(self, *args, **kwargs):
         if self.source_url and not self.source_domain:

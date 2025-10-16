@@ -8,10 +8,10 @@ from news.scraping.parsers import scrape_one
 log = logging.getLogger(__name__)
 
 class Command(BaseCommand):
-    help = "Scrape predefined list of articles (env SCRAPER_URLS or --urls) and save to DB"
+    help = "Scrape predefined list of articles (use env SCRAPER_URLS or --urls) and save to DataBase"
 
     def add_arguments(self, parser):
-        parser.add_argument("--urls", type=str, help="Comma-separated URLs (overrides env)")
+        parser.add_argument("--urls", type=str, help="Comma-separated URLs")
 
     def handle(self, *args, **opts):
         urls_env = opts.get("urls") or os.getenv("SCRAPER_URLS", "")

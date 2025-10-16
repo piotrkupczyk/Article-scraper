@@ -52,15 +52,16 @@ ASGI_APPLICATION = "sraper.asgi.application"
 
 DATABASES = {
     "default": {
-        "options": "-c client_encoding=UTF8",
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.getenv("POSTGRES_DB", "articles"),
         "USER": os.getenv("POSTGRES_USER", "postgres"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", "postgres"),
         "HOST": os.getenv("POSTGRES_HOST", "localhost"),
         "PORT": os.getenv("POSTGRES_PORT", "5432"),
+        "OPTIONS": { "options": "-c client_encoding=UTF8" }, 
     }
 }
+
 
 LANGUAGE_CODE = "pl-pl"
 TIME_ZONE = os.getenv("SCRAPER_TIMEZONE", "Europe/Warsaw")
@@ -72,4 +73,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
 }

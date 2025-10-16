@@ -7,6 +7,9 @@ import requests
 from bs4 import BeautifulSoup
 import trafilatura
 from readability import Document
+import re
+from bs4 import BeautifulSoup
+import trafilatura
 import dateparser
 import pytz
 from django.utils.timezone import make_aware
@@ -43,38 +46,55 @@ def extract_title(soup: BeautifulSoup) -> Optional[str]:
     h1 = soup.find("h1")
     return h1.text.strip() if h1 else None
 
-def extract_html_and_text(html: str) -> Tuple[str, str]:
+def extract_html_and_text(html: str) -> tuple[str, str]:
     extracted = trafilatura.extract(
-        html, include_comments=False, include_tables=False, include_images=False, favor_recall=True
+        html,
+        include_comments=False,
+        include_tables=False,
+        include_images=False,
+        favor_recall=True,
     )
+
     if extracted:
-        text_content = extracted.strip()
-        html_content = html  # zachowujemy pełny HTML
+        article_html = Document(html).summary(html_partial=True)
+        text_plain = extracted.strip()
     else:
-        doc = Document(html)
-        article_html = doc.summary(html_partial=True)
-        text_content = BeautifulSoup(article_html, "lxml").get_text("\n").strip()
-        html_content = article_html
-    return html_content, text_content
+        article_html = Document(html).summary(html_partial=True)
+        text_plain = BeautifulSoup(article_html, "lxml").get_text("\n").strip()
+
+    
+    text_plain = re.sub(r"[ \t]+", " ", text_plain)
+    text_plain = re.sub(r"\s+\n", "\n", text_plain).strip()
+
+    return article_html, text_plain
+
+
 
 def _dateparse(text: str, base_tz: str) -> Optional[datetime]:
+    
     settings = {
         "PREFER_DATES_FROM": "past",
         "TIMEZONE": base_tz,
         "RETURN_AS_TIMEZONE_AWARE": True,
-        "LANGUAGES": ["pl", "en"],
         "DATE_ORDER": "YMD",
+        "NORMALIZE": True,
     }
-    dt = dateparser.parse(text, settings=settings)
+    
+    dt = dateparser.parse(text, settings=settings, languages=["pl", "en"])
     if not dt:
         return None
+
+    
     if dt.tzinfo is None:
         tz = pytz.timezone(base_tz)
         dt = make_aware(dt, timezone=tz)
-    # jeśli brak dokładnej godziny – ustaw 00:00:00
+
+    
     if dt.hour == 0 and dt.minute == 0 and dt.second == 0:
         dt = dt.replace(hour=0, minute=0, second=0, microsecond=0)
+
     return dt
+
 
 def parse_any_date(soup: BeautifulSoup, base_tz: str = "Europe/Warsaw") -> datetime:
     for tag, attrs in META_DATE_QUERIES:

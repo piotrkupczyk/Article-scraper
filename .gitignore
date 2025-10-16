@@ -10,11 +10,14 @@ dist/
 build/
 .coverage
 .coverage.*
+coverage.xml
 htmlcov/
 .pytest_cache/
 .mypy_cache/
-.dmypy.json
 .pyre/
+.tox/
+.hypothesis/
+.cache/
 
 # virtualenv
 .venv/
@@ -25,38 +28,46 @@ env/
 .env
 .env.*.local
 *.env
+.envrc
+.python-version
 
 # Django runtime / artifacts
 *.log
 *.sqlite3
 db.sqlite3
 media/
-staticfiles/       
+staticfiles/
 static_root/
 
 # IDE / Editor
 .vscode/
 .idea/
 *.iml
+.ipynb_checkpoints/
 
 # OS junk
 .DS_Store
 Thumbs.db
 Desktop.ini
 
-# Docker (jeśli używasz)
+# Docker
 *.pid
 *.pid.lock
 
 # Coverage / profiling
 .prof
 *.prof
+pytest.xml
 
-# Node 
+# Node / frontend
 node_modules/
 npm-debug.log*
 yarn-error.log*
+pnpm-lock.yaml
+.parcel-cache/
 
 # Misc
+*.orig
+*.bak
 .swp
 .swo
